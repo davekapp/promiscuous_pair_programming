@@ -11,6 +11,10 @@ describe PairingSession do
       session.reload.owner.should == user
     end
   end
+  
+  describe "attendees" do
+    # TODO: move some of the tests from attendee_spec to here
+  end
 
   describe "validations" do
 

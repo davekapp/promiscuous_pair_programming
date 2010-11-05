@@ -15,5 +15,15 @@
   <%= @pairing_session.end_at %>
 </p>
 
+<div>
+	<% if @pairing_session.attendees.count > 0%>
+	<p>The following other users will be attending this pairing session with you:</p>
+	<ul>
+		<%= render @pairing_session.attendees %>
+	</ul>
+	<% else %>
+	<p>Nobody is going to attend this pairing session right now. Invite someone!</p>
+	<% end %>
+</div>
 <%= link_to 'Edit', edit_pairing_session_path(@pairing_session) %> |
 <%= link_to 'Back', pairing_sessions_path %>

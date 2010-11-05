@@ -1,6 +1,7 @@
 class PairingSession < ActiveRecord::Base
 
   belongs_to :owner, :class_name => "User"
+  has_many   :attendees, :dependent => :destroy
 
   validates :description, :start_at, :end_at, :presence => true
 
@@ -10,6 +11,22 @@ class PairingSession < ActiveRecord::Base
   scope    :upcoming, lambda { 
       where("pairing_sessions.start_at IS NOT NULL AND pairing_sessions.start_at >= ?", Time.zone.now)
     }
+    
+  def add_attendee(user)
+    # don't add the owner as an attendee -- they're going anyways
+    # TODO: raise an exception?
+    return if self.owner.id == user.id
+    # make sure we don't add the same user twice
+    attendees.each do |a|
+      return if a.user_id == user.id
+    end
+    attendee = Attendee.create do |a|
+      a.user_id = user.id
+      a.pairing_session_id = self.id
+    end
+    attendee.save
+    attendees << attendee
+  end
   
   private
 

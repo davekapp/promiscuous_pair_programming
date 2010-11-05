@@ -8,4 +8,5 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation#, :remember_me
 
   has_many :pairing_sessions, :foreign_key => :owner_id
+  has_many :attendees, :dependent => :destroy
 end
